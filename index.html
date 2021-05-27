@@ -32,48 +32,123 @@
       <!-- Timeblocks go here -->
       <div class="container">
         <div class="row">
+          <div class="col-2">12AM</div>
+          <div class="col-8" id="0"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">1AM</div>
+          <div class="col-8" id="1"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">2AM</div>
+          <div class="col-8" id="2"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">3AM</div>
+          <div class="col-8" id="3"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">4AM</div>
+          <div class="col-8" id="4"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">5AM</div>
+          <div class="col-8" id="5"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">6AM</div>
+          <div class="col-8" id="6"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">7AM</div>
+          <div class="col-8" id="7"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">8AM</div>
+          <div class="col-8" id="8"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
           <div class="col-2">9AM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="9"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">10AM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="10"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">11AM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="11"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">12PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="12"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">1PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="13"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">2PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="14"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">3PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="15"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">4PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="16"></div>
           <div class="col-2"></div>
         </div>
         <div class="row">
           <div class="col-2">5PM</div>
-          <div class="col-8"></div>
+          <div class="col-8" id="17"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">6PM</div>
+          <div class="col-8" id="18"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">7PM</div>
+          <div class="col-8" id="19"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">8PM</div>
+          <div class="col-8" id="20"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">9PM</div>
+          <div class="col-8" id="21"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">10PM</div>
+          <div class="col-8" id="22"></div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-2">11PM</div>
+          <div class="col-8" id="23"></div>
           <div class="col-2"></div>
         </div>
       </div>
@@ -87,6 +162,27 @@
       //today's date
       const today = moment().format("dddd, MMMM Do");
       $("#currentDay").append(today);
+
+      // To get the current hour
+      var currentHour = moment().format("k");
+      console.log(currentHour);
+
+      // To set the grey color for hours before the current one
+      for (var i = parseInt(currentHour) - 1; i === 0; i--) {
+        $("#" + i).css("background", "grey");
+        console.log("#" + i);
+      }
+
+      // To set the red color for the current hour
+      $("#" + currentHour).css("background", "red");
+
+      // To set the green color for hours after the current one
+      var maxHourInDay = 23;
+
+      for (var i = parseInt(currentHour) + 1; i <= maxHourInDay; i++) {
+        $("#" + i).css("background", "green");
+        console.log("#" + i);
+      }
     </script>
   </body>
 </html>

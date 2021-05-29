@@ -74,17 +74,19 @@ textarea {
   border: dotted 1px
 }
 
-:focus {
+.col-9:focus {
   outline: none;
   padding-top: 5px;
 }
 
-/* .col-8:focus::after {
+
+/* .col-9:focus::after {
   border: "0px";
   padding-top: "5px";
 }
 
 :focus::after {
   border: "0px";
-  padding-top: "5px";
-} */
+  padding-top: "5px"; 
+} 
+*/

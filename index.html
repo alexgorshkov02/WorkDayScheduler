@@ -30,165 +30,93 @@
     </header>
     <div class="container" id="all_time_blocks">
       <!-- Timeblocks go here -->
-      <div class="row">
-        <div class="col-2">12AM</div>
-        <div class="col-8" id="0" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">1AM</div>
-        <div class="col-8" id="1" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">2AM</div>
-        <div class="col-8" id="2" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">3AM</div>
-        <div class="col-8" id="3" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">4AM</div>
-        <div class="col-8" id="4" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">5AM</div>
-        <div class="col-8" id="5" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">6AM</div>
-        <div class="col-8" id="6" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">7AM</div>
-        <div class="col-8" id="7" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">8AM</div>
-        <div class="col-8" id="8" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">9AM</div>
-        <div class="col-8" id="9" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">10AM</div>
-        <div class="col-8" id="10" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">11AM</div>
-        <div class="col-8" id="11" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">12PM</div>
-        <div class="col-8" id="12" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">1PM</div>
-        <div class="col-8" id="13" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">2PM</div>
-        <div class="col-8" id="14" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">3PM</div>
-        <div class="col-8" id="15" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">4PM</div>
-        <div class="col-8" id="16" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">5PM</div>
-        <div class="col-8" id="17" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">6PM</div>
-        <div class="col-8" id="18" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">7PM</div>
-        <div class="col-8" id="19" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">8PM</div>
-        <div class="col-8" id="20" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">9PM</div>
-        <div class="col-8" id="21" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">10PM</div>
-        <div class="col-8" id="22" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
-      <div class="row">
-        <div class="col-2">11PM</div>
-        <div class="col-8" id="23" contenteditable="true"></div>
-        <div class="col-2"></div>
-      </div>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script src="./assets/js/script.js"></script>
+
+      <script>
+        // Today's date
+        const today = moment().format("dddd, MMMM Do");
+        $("#currentDay").append(today);
+
+        // To get the current hour as a number
+        var currentHour = parseInt(moment().format("k"));
+        // console.log(currentHour);
+
+        var minHourInDay = 1;
+        var maxHourInDay = 23;
+
+        for (var i = minHourInDay; i <= maxHourInDay; i++) {
+          var rowContainer = document.createElement("div");
+          $(rowContainer).attr("class", "row");
+
+          var timeContainer = document.createElement("div");
+          if (i <= 12) {
+            $(timeContainer)
+              .attr("class", "col-2")
+              .html(i + "AM");
+          } else {
+            $(timeContainer)
+              .attr("class", "col-2")
+              .html(i + "PM");
+          }
+
+          var taskTextContainer = document.createElement("div");
+          taskTextContainer.classList.add("col-9", "task" + i);
+          $(taskTextContainer).attr("contenteditable", "true");
+
+          if (currentHour < i) {
+            // To set the grey color for hours before the current one
+            $(taskTextContainer).css("background", "#D3D3D3");
+          } else if (currentHour === i) {
+            // To set the red color for the current hour
+            $(taskTextContainer).css("background", "#FF6347");
+          } else if (currentHour > i) {
+            // To set the green color for hours after the current one
+            $(taskTextContainer).css("background", "#90EE90");
+          } else {
+            console.log("ERROR: No background color selected");
+          }
+
+          var saveBtnContainer = document.createElement("div");
+          saveBtnContainer.classList.add("saveBtn", "col-1");
+          $(saveBtnContainer).attr("id", i);
+          $(rowContainer)
+            .append(timeContainer)
+            .append(taskTextContainer)
+            .append(saveBtnContainer);
+
+          var mainContainer = document.getElementById("all_time_blocks");
+          mainContainer.appendChild(rowContainer);
+        }
+      </script>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="./assets/js/script.js"></script>
-
     <script>
-      // Today's date
-      const today = moment().format("dddd, MMMM Do");
-      $("#currentDay").append(today);
-
-      // To get the current hour
-      var currentHour = moment().format("k");
-      console.log(currentHour);
-
-      // To set the grey color for hours before the current one
-      for (var i = parseInt(currentHour) - 1; i >= 0; i--) {
-        $("#" + i).css("background", "#D3D3D3");
-        console.log("#" + i);
-      }
-
-      // To set the red color for the current hour
-      $("#" + currentHour).css("background", "#FF6347");
-
-      // To set the green color for hours after the current one
-      var maxHourInDay = 23;
-
-      for (var i = parseInt(currentHour) + 1; i <= maxHourInDay; i++) {
-        $("#" + i).css("background", "#90EE90");
-        console.log("#" + i);
-      }
-
-      $(".col-8").on("focusin", function () {
-        $(this).css("border", "2px solid #00BFFF");
+      $(".col-9").on("focusin", function () {
+        $(this).css("border", "2px solid #06aed5");
       });
 
-      $(".col-8").on("focusout", function () {
+      $(".col-9").on("focusout", function () {
         $(this).css("border", "0px");
         $(this).css("padding-top", "5px");
+      });
+
+      $(".saveBtn").on("click", function () {
+        console.log("test");
+
+        var taskArray = [];
+        var taskForHour = {
+          time: "9",
+          task: "testTask",
+        };
+        taskArray.push(taskForHour);
+        console.log(taskForHour);
+        console.log(taskArray);
+        localStorage.setItem("tasks", JSON.stringify(taskArray));
+
+        var tasks = JSON.parse(localStorage.getItem("tasks"));
+        console.log("tasks: ", tasks);
       });
     </script>
   </body>

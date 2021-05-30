@@ -18,7 +18,7 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Work Day Scheduler</title>
   </head>
 
@@ -28,11 +28,128 @@
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <p id="currentDay" class="lead"></p>
     </header>
-    <div class="container">
+    <div class="container" id="all_time_blocks">
       <!-- Timeblocks go here -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script
+        type="application/json"
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      ></script>
+
+      <script>
+        // Today's date
+        const today = moment().format("dddd, MMMM Do");
+        $("#currentDay").append(today);
+
+        // To get the current hour as a number
+        var currentHour = parseInt(moment().format("k"));
+
+        //the first block(hour)
+        var minHourInDay = 9;
+        //the last block(hour)
+        var maxHourInDay = 17;
+
+        function createTimeBlocks() {
+          for (var i = minHourInDay; i <= maxHourInDay; i++) {
+            var rowContainer = document.createElement("div");
+            $(rowContainer).attr("class", "row");
+            var timeContainer = document.createElement("div");
+            timeContainer.classList.add("col-1", "hourContainer");
+            if (i <= 12) {
+              $(timeContainer).html(i + "AM");
+            } else {
+              $(timeContainer).html(i + "PM");
+            }
+
+            var taskTextContainer = document.createElement("div");
+            taskTextContainer.classList.add("col-10", "task_" + i, "taskContainer");
+            $(taskTextContainer).attr("contenteditable", "true");
+
+            if (currentHour < i) {
+              // To set the grey color for hours before the current one
+              $(taskTextContainer).css("background", "#D3D3D3");
+            } else if (currentHour === i) {
+              // To set the red color for the current hour
+              $(taskTextContainer).css("background", "#FF6347");
+            } else if (currentHour > i) {
+              // To set the green color for hours after the current one
+              $(taskTextContainer).css("background", "#90EE90");
+            } else {
+              console.log("ERROR: No background color selected");
+            }
+
+            var saveBtnContainer = document.createElement("div");
+            var saveBtnContainerImage = document.createElement("i");
+            saveBtnContainer.classList.add("saveBtn", "col-1");
+            saveBtnContainerImage.classList.add("fas", "fa-save", "buttonSave");
+            $(saveBtnContainerImage).attr("id", i);
+            $(saveBtnContainer).append(saveBtnContainerImage);
+
+            $(rowContainer)
+              .append(timeContainer)
+              .append(taskTextContainer)
+              .append(saveBtnContainer);
+
+            var mainContainer = document.getElementById("all_time_blocks");
+            mainContainer.appendChild(rowContainer);
+          }
+        }
+
+        function fillTasksWithDataFromLocaleStorage() {
+          for (var i = minHourInDay; i <= maxHourInDay; i++) {
+            var tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+            if (tasks[i]) {
+              var test1 = $(".task_" + i).html(tasks[i].task);
+            }
+          }
+        }
+
+        // Main part START
+        //Run the time blocks creation
+        createTimeBlocks();
+
+        //Ready function which waits when the document is ready
+        $(function () {
+          fillTasksWithDataFromLocaleStorage();
+        });
+        // Main part END
+      </script>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- Listeners START -->
+    <script>
+      $(".taskContainer").on("focusin", function () {
+        $(this).css("border", "2px solid #06aed5");
+      });
+
+      $(".taskContainer").on("focusout", function () {
+        $(this).css("border", "0px");
+        $(this).css("padding-top", "5px");
+      });
+
+      // Save the data once a save button is clicked
+      $(".buttonSave").on("click", function (e) {
+
+        tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+        var taskID = parseInt(e.target.id);
+        var taskValue = $(".task_" + taskID).html();
+
+        var taskForHour = { time: taskID, task: taskValue };
+
+        for (var i = 0; i <= maxHourInDay; i++) {
+          if (!tasks[i]) {
+            var emptyTask = { time: i, task: "" };
+            tasks.splice(i, 0, emptyTask);
+            console.log(tasks);
+          }
+        }
+        tasks.splice(e.target.id, 1, taskForHour);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      });
+    </script>
+    <!-- Listeners END -->
   </body>
 </html>

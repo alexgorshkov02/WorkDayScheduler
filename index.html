@@ -63,7 +63,11 @@
             }
 
             var taskTextContainer = document.createElement("div");
-            taskTextContainer.classList.add("col-10", "task_" + i, "taskContainer");
+            taskTextContainer.classList.add(
+              "col-10",
+              "task_" + i,
+              "taskContainer"
+            );
             $(taskTextContainer).attr("contenteditable", "true");
 
             if (currentHour < i) {
@@ -130,7 +134,6 @@
 
       // Save the data once a save button is clicked
       $(".buttonSave").on("click", function (e) {
-
         tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
 
         var taskID = parseInt(e.target.id);
@@ -138,15 +141,18 @@
 
         var taskForHour = { time: taskID, task: taskValue };
 
-        for (var i = 0; i <= maxHourInDay; i++) {
-          if (!tasks[i]) {
-            var emptyTask = { time: i, task: "" };
-            tasks.splice(i, 0, emptyTask);
-            console.log(tasks);
+        // To check the task value for saving is different from the value in localStorage
+        if (tasks[taskID].task !== taskValue) {
+          for (var i = 0; i <= maxHourInDay; i++) {
+            if (!tasks[i]) {
+              var emptyTask = { time: i, task: "" };
+              tasks.splice(i, 0, emptyTask);
+              console.log(tasks);
+            }
           }
+          tasks.splice(e.target.id, 1, taskForHour);
+          localStorage.setItem("tasks", JSON.stringify(tasks));
         }
-        tasks.splice(e.target.id, 1, taskForHour);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
       });
     </script>
     <!-- Listeners END -->

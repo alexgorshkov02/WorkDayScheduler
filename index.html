@@ -62,7 +62,8 @@
             if (i <= 12) {
               $(timeContainer).html(i + "AM");
             } else {
-              $(timeContainer).html(i + "PM");
+              // i-12 - to convert from 24 hour format to 12 hour format
+              $(timeContainer).html(i-12 + "PM");
             }
 
             var taskTextContainer = document.createElement("div");
@@ -146,8 +147,8 @@
 
         var taskForHour = { time: taskID, task: taskValue };
 
-        // To check the task value for saving is different from the value in localStorage
-        if (tasks[taskID].task !== taskValue) {
+        // To check the task value for saving is different from the value in localStorage EXCEPT the array is absent in the localStorage
+        if ((!tasks[taskID]) || (tasks[taskID].task !== taskValue)) {
           for (var i = 0; i <= maxHourInDay; i++) {
             if (!tasks[i]) {
               var emptyTask = { time: i, task: "" };

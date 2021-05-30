@@ -32,6 +32,10 @@
       <!-- Timeblocks go here -->
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script
+        type="application/json"
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      ></script>
       <script src="./assets/js/script.js"></script>
 
       <script>
@@ -43,52 +47,80 @@
         var currentHour = parseInt(moment().format("k"));
         // console.log(currentHour);
 
-        var minHourInDay = 1;
-        var maxHourInDay = 23;
+        var minHourInDay = 9;
+        var maxHourInDay = 17;
 
-        for (var i = minHourInDay; i <= maxHourInDay; i++) {
-          var rowContainer = document.createElement("div");
-          $(rowContainer).attr("class", "row");
+        function createTimeBlocks() {
+          // hoursIntotal = maxHourInDay - minHourInDay;
+          for (var i = minHourInDay; i <= maxHourInDay; i++) {
+            var rowContainer = document.createElement("div");
+            $(rowContainer).attr("class", "row");
 
-          var timeContainer = document.createElement("div");
-          if (i <= 12) {
-            $(timeContainer)
-              .attr("class", "col-2")
-              .html(i + "AM");
-          } else {
-            $(timeContainer)
-              .attr("class", "col-2")
-              .html(i + "PM");
+            var timeContainer = document.createElement("div");
+            if (i <= 12) {
+              $(timeContainer)
+                .attr("class", "col-2")
+                .html(i + "AM");
+            } else {
+              $(timeContainer)
+                .attr("class", "col-2")
+                .html(i + "PM");
+            }
+
+            var taskTextContainer = document.createElement("div");
+            taskTextContainer.classList.add("col-9", "task_" + i);
+            $(taskTextContainer).attr("contenteditable", "true");
+
+            if (currentHour < i) {
+              // To set the grey color for hours before the current one
+              $(taskTextContainer).css("background", "#D3D3D3");
+            } else if (currentHour === i) {
+              // To set the red color for the current hour
+              $(taskTextContainer).css("background", "#FF6347");
+            } else if (currentHour > i) {
+              // To set the green color for hours after the current one
+              $(taskTextContainer).css("background", "#90EE90");
+            } else {
+              console.log("ERROR: No background color selected");
+            }
+
+            var saveBtnContainer = document.createElement("div");
+            var saveBtnContainerImage = document.createElement("i");
+            saveBtnContainer.classList.add("saveBtn", "col-1");
+            saveBtnContainerImage.classList.add("fas", "fa-save", "buttonSave");
+            $(saveBtnContainerImage).attr("id", i);
+            $(saveBtnContainer).append(saveBtnContainerImage);
+            // <i class="fas fa-save"></i>
+            $(rowContainer)
+              .append(timeContainer)
+              .append(taskTextContainer)
+              .append(saveBtnContainer);
+
+            var mainContainer = document.getElementById("all_time_blocks");
+            mainContainer.appendChild(rowContainer);
           }
-
-          var taskTextContainer = document.createElement("div");
-          taskTextContainer.classList.add("col-9", "task" + i);
-          $(taskTextContainer).attr("contenteditable", "true");
-
-          if (currentHour < i) {
-            // To set the grey color for hours before the current one
-            $(taskTextContainer).css("background", "#D3D3D3");
-          } else if (currentHour === i) {
-            // To set the red color for the current hour
-            $(taskTextContainer).css("background", "#FF6347");
-          } else if (currentHour > i) {
-            // To set the green color for hours after the current one
-            $(taskTextContainer).css("background", "#90EE90");
-          } else {
-            console.log("ERROR: No background color selected");
-          }
-
-          var saveBtnContainer = document.createElement("div");
-          saveBtnContainer.classList.add("saveBtn", "col-1");
-          $(saveBtnContainer).attr("id", i);
-          $(rowContainer)
-            .append(timeContainer)
-            .append(taskTextContainer)
-            .append(saveBtnContainer);
-
-          var mainContainer = document.getElementById("all_time_blocks");
-          mainContainer.appendChild(rowContainer);
         }
+
+        function fillTasksWithDataFromLocaleStorage() {
+          for (var i = minHourInDay; i <= maxHourInDay; i++) {
+            var tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+            // console.log("Tasks: ", tasks);
+            if (tasks[i]) {
+              var test1 = $(".task_" + i).html(tasks[i].task);
+            }
+            // console.log("Test1: ", test1);
+            // var test2 = $('.task_' + i).html('sads');
+            // console.log("Test2: ", test2);
+          }
+        }
+
+        //Run the time blocks creation
+        createTimeBlocks();
+
+        //Ready function which waits when the document is ready
+        $(function () {
+          fillTasksWithDataFromLocaleStorage();
+        });
       </script>
     </div>
 
@@ -101,22 +133,36 @@
         $(this).css("border", "0px");
         $(this).css("padding-top", "5px");
       });
+      
+      // Save the data once a save button is clicked
+      $(".buttonSave").on("click", function (e) {
+        console.log(e.target.id);
 
-      $(".saveBtn").on("click", function () {
-        console.log("test");
-
-        var taskArray = [];
-        var taskForHour = {
-          time: "9",
-          task: "testTask",
-        };
-        taskArray.push(taskForHour);
-        console.log(taskForHour);
-        console.log(taskArray);
-        localStorage.setItem("tasks", JSON.stringify(taskArray));
-
-        var tasks = JSON.parse(localStorage.getItem("tasks"));
+        tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
         console.log("tasks: ", tasks);
+
+        // var taskArray = [];
+        var taskID = parseInt(e.target.id);
+        var taskValue = $(".task_" + taskID).html();
+        console.log("taskValue: ", taskValue);
+
+        var taskForHour = { time: taskID, task: taskValue };
+
+        for (var i = 0; i <= maxHourInDay; i++) {
+          if (!tasks[i]) {
+            var emptyTask = { time: i, task: "" };
+            tasks.splice(i, 0, emptyTask);
+            console.log(tasks);
+          }
+        }
+        // console.log("IDDDDDDDDDDDDDDD: ", e.target.id);
+        // console.log("BEFORE: ", tasks);
+        tasks.splice(e.target.id, 1, taskForHour);
+        // console.log("AFTER: ", tasks);
+        // taskArray.push(taskForHour);
+        // console.log(taskForHour);
+        // console.log(taskArray);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
       });
     </script>
   </body>

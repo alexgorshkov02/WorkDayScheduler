@@ -73,13 +73,15 @@
             );
             $(taskTextContainer).attr("contenteditable", "true");
 
-            if (currentHour < i) {
+            // Hours before the current one
+            if (i < currentHour) {
               // To set the grey color for hours before the current one
               $(taskTextContainer).css("background", "#D3D3D3");
             } else if (currentHour === i) {
               // To set the red color for the current hour
               $(taskTextContainer).css("background", "#FF6347");
-            } else if (currentHour > i) {
+              // Hours after the current one
+            } else if (currentHour < i) {
               // To set the green color for hours after the current one
               $(taskTextContainer).css("background", "#90EE90");
             } else {

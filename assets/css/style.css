@@ -83,7 +83,10 @@ textarea {
   left: 40%;
 }
 
+.taskContainer {
+  padding-top: 5px;
+}
+
 .taskContainer:focus {
   outline: none;
-  padding-top: 5px;
 }

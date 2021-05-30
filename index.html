@@ -36,7 +36,6 @@
         type="application/json"
         src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
       ></script>
-      <script src="./assets/js/script.js"></script>
 
       <script>
         // Today's date
@@ -45,30 +44,26 @@
 
         // To get the current hour as a number
         var currentHour = parseInt(moment().format("k"));
-        // console.log(currentHour);
 
+        //the first block(hour)
         var minHourInDay = 9;
+        //the last block(hour)
         var maxHourInDay = 17;
 
         function createTimeBlocks() {
-          // hoursIntotal = maxHourInDay - minHourInDay;
           for (var i = minHourInDay; i <= maxHourInDay; i++) {
             var rowContainer = document.createElement("div");
             $(rowContainer).attr("class", "row");
-
             var timeContainer = document.createElement("div");
+            timeContainer.classList.add("col-1", "hourContainer");
             if (i <= 12) {
-              $(timeContainer)
-                .attr("class", "col-2")
-                .html(i + "AM");
+              $(timeContainer).html(i + "AM");
             } else {
-              $(timeContainer)
-                .attr("class", "col-2")
-                .html(i + "PM");
+              $(timeContainer).html(i + "PM");
             }
 
             var taskTextContainer = document.createElement("div");
-            taskTextContainer.classList.add("col-9", "task_" + i);
+            taskTextContainer.classList.add("col-10", "task_" + i, "taskContainer");
             $(taskTextContainer).attr("contenteditable", "true");
 
             if (currentHour < i) {
@@ -90,7 +85,7 @@
             saveBtnContainerImage.classList.add("fas", "fa-save", "buttonSave");
             $(saveBtnContainerImage).attr("id", i);
             $(saveBtnContainer).append(saveBtnContainerImage);
-            // <i class="fas fa-save"></i>
+
             $(rowContainer)
               .append(timeContainer)
               .append(taskTextContainer)
@@ -104,16 +99,14 @@
         function fillTasksWithDataFromLocaleStorage() {
           for (var i = minHourInDay; i <= maxHourInDay; i++) {
             var tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-            // console.log("Tasks: ", tasks);
+
             if (tasks[i]) {
               var test1 = $(".task_" + i).html(tasks[i].task);
             }
-            // console.log("Test1: ", test1);
-            // var test2 = $('.task_' + i).html('sads');
-            // console.log("Test2: ", test2);
           }
         }
 
+        // Main part START
         //Run the time blocks creation
         createTimeBlocks();
 
@@ -121,30 +114,28 @@
         $(function () {
           fillTasksWithDataFromLocaleStorage();
         });
+        // Main part END
       </script>
     </div>
 
+    <!-- Listeners START -->
     <script>
-      $(".col-9").on("focusin", function () {
+      $(".taskContainer").on("focusin", function () {
         $(this).css("border", "2px solid #06aed5");
       });
 
-      $(".col-9").on("focusout", function () {
+      $(".taskContainer").on("focusout", function () {
         $(this).css("border", "0px");
         $(this).css("padding-top", "5px");
       });
-      
+
       // Save the data once a save button is clicked
       $(".buttonSave").on("click", function (e) {
-        console.log(e.target.id);
 
         tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-        console.log("tasks: ", tasks);
 
-        // var taskArray = [];
         var taskID = parseInt(e.target.id);
         var taskValue = $(".task_" + taskID).html();
-        console.log("taskValue: ", taskValue);
 
         var taskForHour = { time: taskID, task: taskValue };
 
@@ -155,15 +146,10 @@
             console.log(tasks);
           }
         }
-        // console.log("IDDDDDDDDDDDDDDD: ", e.target.id);
-        // console.log("BEFORE: ", tasks);
         tasks.splice(e.target.id, 1, taskForHour);
-        // console.log("AFTER: ", tasks);
-        // taskArray.push(taskForHour);
-        // console.log(taskForHour);
-        // console.log(taskArray);
         localStorage.setItem("tasks", JSON.stringify(tasks));
       });
     </script>
+    <!-- Listeners END -->
   </body>
 </html>

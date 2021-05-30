@@ -36,10 +36,13 @@ textarea {
   border-top: 1px solid white;
 }
 
-.hour {
+.hourContainer {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
+  text-align: right;
+  padding-top: 10px;
+  border-right: 1px solid black;
 }
 
 .past {
@@ -63,6 +66,9 @@ textarea {
   border-bottom-right-radius: 15px;
   background-color: #06aed5;
   color: white;
+  text-align: center;
+  height: 100%;
+  position: relative;
 }
 
 .saveBtn i:hover {
@@ -70,20 +76,6 @@ textarea {
   transition: all 0.3s ease-in-out;
 }
 
-* {
-  border: dotted 1px;
-}
-
-.col-9:focus {
-  outline: none;
-  padding-top: 5px;
-}
-
-.saveBtn {
-  text-align: center;
-  height: 100%;
-  position: relative;
-}
 .fa-save {
   margin: 0;
   position: absolute;
@@ -91,21 +83,7 @@ textarea {
   left: 40%;
 }
 
-/* .fas::before{
-text-align: center;
+.taskContainer:focus {
+  outline: none;
+  padding-top: 5px;
 }
-
-.fa-save::before {
-  text-align: center;
-} */
-
-/* .col-9:focus::after {
-  border: "0px";
-  padding-top: "5px";
-}
-
-:focus::after {
-  border: "0px";
-  padding-top: "5px"; 
-} 
-*/
